@@ -144,9 +144,9 @@ body{
 
     width:100%;
 
-    height:10mm;
+    text-align:center;
 
-    overflow:hidden;
+    margin-bottom:2px;
 
 }
 
@@ -154,14 +154,15 @@ body{
 
     width:100%;
 
-    height:100%;
+    height:auto;
 
-    object-fit:cover;
+    max-height:7mm;
+
+    object-fit:contain;
 
     display:block;
 
 }
-
 
 .card-header{
 
@@ -171,7 +172,7 @@ body{
 
     text-align:center;
 
-    padding:2mm;
+    padding:1.2mm;
 
     border-bottom:2px solid #FFC107;
 
@@ -371,6 +372,7 @@ students.forEach(function(student,index){
     html += `
 
 <div class="student-card">
+<div class="card-header">
 
 ${showBSPHeader ? `
 <div class="bsp-strip">
@@ -378,7 +380,9 @@ ${showBSPHeader ? `
 </div>
 ` : ""}
 
-<div class="card-header">
+<div class="card-title">
+🎓 STUDENT IDENTITY CARD
+</div>
 
 <div class="card-title">
 🎓 STUDENT IDENTITY CARD
