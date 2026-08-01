@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        SSIDG - Smart Student ID Card Generator
+    </title>
+
+    <!-- Google Font -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Main CSS -->
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     WELCOME SCREEN
+===================================================== -->
+
+<div id="welcomeScreen"
+     class="welcome-screen">
+
+    <div class="welcome-card">
+
+        <h1>
+            SSIDG
+        </h1>
+
+        <h2>
+            Smart Student ID Card Generator
+        </h2>
+
+        <p class="tagline">
+            Create • Preview • Print
+        </p>
+
+        <hr>
+
+        <h3>
+            👋 Welcome!
+        </h3>
+
+        <p>
+            Generate professional Student Identity Cards
+            for your school in just 3 simple steps.
+        </p>
+
+        <div class="steps">
+
+            <p>
+                ① Download the Excel Template
+            </p>
+
+            <p>
+                ② Upload the completed Excel File
+            </p>
+
+            <p>
+                ③ Preview & Print
+            </p>
+
+        </div>
+
+        <div class="privacy-box">
+
+            <strong>
+                🛡️ PRIVACY FIRST
+            </strong>
+
+            <p>
+
+                Your data never leaves your computer.
+
+                Excel files are processed directly in your
+                web browser and are never uploaded,
+                stored or shared with any server.
+
+                Your students' information remains
+                completely private.
+
+            </p>
+
+        </div>
+
+        <button id="startBtn">
+            🚀 START CREATING ID CARDS
+        </button>
+
+        <div class="version-text">
+            SSIDG Community Edition v1.0
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     MAIN APPLICATION
+===================================================== -->
+
+<div id="mainApp"
+     style="display:none;">
+
+    <div class="container">
+
+        <!-- HEADER -->
+
+        <header>
+
+            <h1>
+                SSIDG
+            </h1>
+
+            <h2>
+                Smart Student ID Card Generator
+            </h2>
+
+            <p class="header-tagline">
+                Create • Preview • Print
+            </p>
+
+        </header>
+
+        <!-- PRIVACY NOTICE -->
+
+        <div class="privacy-banner">
+
+            <h3>
+                🛡️ Privacy First
+            </h3>
+
+            <p>
+
+                Your data never leaves your computer.
+
+                Excel files are processed directly
+                in your browser and are never uploaded,
+                stored or shared.
+
+            </p>
+
+        </div>
+
+        <!-- FORM START -->
+
+        <div class="form-box">
+<!-- =====================================================
+     SCHOOL INFORMATION
+===================================================== -->
+
+<h3 class="section-title">
+    🏫 School Information
+</h3>
+
+<label for="schoolName">
+    School Name
+</label>
+
+<input
+    type="text"
+    id="schoolName"
+    placeholder="ENTER SCHOOL NAME IN CAPITAL LETTERS"
+    autocomplete="off"
+    required>
+
+<small class="hint">
+    School name is automatically converted to CAPITAL LETTERS.
+</small>
+
+
+<label for="udise">
+    UDISE Code
+</label>
+
+<input
+    type="text"
+    id="udise"
+    maxlength="11"
+    placeholder="ENTER 11 DIGIT UDISE CODE"
+    autocomplete="off"
+    required>
+
+<small class="hint">
+    Only 11 numeric digits are allowed.
+</small>
+
+
+<label for="schoolAddress">
+    School Address
+</label>
+
+<textarea
+    id="schoolAddress"
+    rows="3"
+    placeholder="ENTER SCHOOL ADDRESS IN CAPITAL LETTERS"
+    required></textarea>
+
+<small class="hint">
+    School address is automatically converted to CAPITAL LETTERS.
+</small>
+
+
+<label for="signature">
+    Principal Signature
+</label>
+
+<input
+    type="file"
+    id="signature"
+    accept=".jpg,.jpeg,.png"
+    required>
+
+<small class="hint">
+    Upload Principal's signature in JPG or PNG format.
+</small>
+
+
+<hr>
+
+<!-- =====================================================
+     EXCEL TEMPLATE
+===================================================== -->
+
+<div class="template-box">
+
+    <h3>
+        📄 Excel Template
+    </h3>
+
+    <p>
+
+        For best results, download and use the
+        sample Excel template.
+
+    </p>
+
+    <p>
+
+        Only Excel (.xlsx) files created using
+        this template are supported.
+
+    </p>
+
+    <a
+        href="templates/Student_Template.xlsx"
+        download
+        class="download-btn">
+
+        ⬇ DOWNLOAD SAMPLE EXCEL
+
+    </a>
+
+</div>
+
+
+<hr>
+
+<!-- =====================================================
+     EXCEL UPLOAD
+===================================================== -->
+
+<h3 class="section-title">
+    📂 Upload Student Excel
+</h3>
+
+<label for="excelFile">
+    Student Excel File (.xlsx)
+</label>
+
+<input
+    type="file"
+    id="excelFile"
+    accept=".xlsx"
+    required>
+
+
+<!-- =====================================================
+     EXCEL SUMMARY
+===================================================== -->
+
+<div
+    id="summaryBox"
+    class="summary-box"
+    style="display:none;">
+
+    <h3>
+        📊 Excel Summary
+    </h3>
+
+    <table class="summary-table">
+
+        <tr>
+            <td><strong>File Name</strong></td>
+            <td id="fileName"></td>
+        </tr>
+
+        <tr>
+            <td><strong>Total Students</strong></td>
+            <td id="totalStudents"></td>
+        </tr>
+
+    </table>
+
+</div>
+
+
+<!-- =====================================================
+     ACTION BUTTONS
+===================================================== -->
+
+<div class="button-group">
+
+    <button
+        type="button"
+        id="generateBtn">
+
+        🆔 GENERATE ID CARDS
+
+    </button>
+
+    <button
+        type="button"
+        id="previewBtn"
+        style="display:none;">
+
+        👁 PREVIEW FIRST CARD
+
+    </button>
+
+    <button
+        type="button"
+        id="printBtn"
+        style="display:none;">
+
+        🖨 PRINT ALL ID CARDS
+
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     PREVIEW AREA
+===================================================== -->
+
+<div
+    id="previewContainer"
+    class="preview-container"
+    style="display:none;">
+
+    <h2>
+
+        Student Identity Card Preview
+
+    </h2>
+
+    <div id="idCard">
+
+        <!-- Preview will appear here -->
+
+    </div>
+
+</div>
+<!-- =====================================================
+     STATUS BAR
+===================================================== -->
+
+<div class="status-bar">
+
+    <div id="statusText">
+        🟢 STATUS : READY
+    </div>
+
+    <div class="version">
+        SSIDG Community Edition v1.0
+    </div>
+
+</div>
+
+        </div>
+        <!-- End of form-box -->
+
+    </div>
+    <!-- End of container -->
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <p>
+
+                <strong>SSIDG</strong><br>
+
+                Smart Student ID Card Generator
+
+            </p>
+
+            <p>
+
+                Create • Preview • Print
+
+            </p>
+
+            <p>
+
+                Designed for Schools • Built for Teachers
+
+            </p>
+
+            <p>
+
+                🛡️ Privacy First — Your data never leaves your computer.
+
+            </p>
+
+            <p>
+
+                © 2026 SSIDG. All Rights Reserved.
+
+            </p>
+
+        </div>
+
+    </footer>
+
+</div>
+<!-- End of mainApp -->
+
+
+<!-- =====================================================
+     JAVASCRIPT FILES
+===================================================== -->
+
+<script src="js/xlsx.full.min.js"></script>
+
+<script src="js/status.js"></script>
+
+<script src="js/excelReader.js"></script>
+
+<script src="js/preview.js"></script>
+
+<script src="js/print.js"></script>
+
+<script src="js/script.js"></script>
+
+</body>
+
+</html>
