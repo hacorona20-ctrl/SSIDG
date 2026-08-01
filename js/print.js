@@ -45,7 +45,8 @@ function printAllCards() {
 
     const udise =
         document.getElementById("udise").value;
-
+const showBSPHeader =
+document.getElementById("useBSPHeader").checked;
     //==========================================
     // SIGNATURE
     //==========================================
@@ -139,6 +140,28 @@ body{
     overflow:hidden;
 
 }
+.bsp-strip{
+
+    width:100%;
+
+    height:10mm;
+
+    overflow:hidden;
+
+}
+
+.bsp-strip img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+
+}
+
 
 .card-header{
 
@@ -348,6 +371,12 @@ students.forEach(function(student,index){
     html += `
 
 <div class="student-card">
+
+${showBSPHeader ? `
+<div class="bsp-strip">
+    <img src="assets/images/bsp-strip.png">
+</div>
+` : ""}
 
 <div class="card-header">
 
