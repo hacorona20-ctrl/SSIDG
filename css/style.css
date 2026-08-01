@@ -429,3 +429,54 @@ footer{
     }
 
 }
+.developer-name{
+
+    color:#C62828;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    margin-top:5px;
+
+    text-align:center;
+
+}
+/*==========================================
+Developer Name
+==========================================*/
+
+.developer-name{
+
+    text-align:center;
+
+    margin-top:6px;
+
+    margin-bottom:15px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    color:#222;
+
+}
+
+.developer-name span{
+
+    color:#D50000;
+
+    font-size:17px;
+
+    font-weight:700;
+
+}
+.version{
+
+    color:#1565C0;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
