@@ -1,74 +1,152 @@
 /*
-==========================================
-SSIDG - Smart Student ID Card Generator
-Version : 2.0
+=========================================================
+SSIDG Community Edition v1.0
 
-File : print.js
+Smart Student ID Card Generator
 
-Purpose :
-Professional Print Engine
+Print Engine
 
-Author :
-Saurabh Sahai
-==========================================
+Developed By : Saurabh Sahai
+
+© 2026 All Rights Reserved
+=========================================================
 */
 
-//==========================================
-// PRINT ALL STUDENT ID CARDS
-//==========================================
+//=========================================================
+// GLOBAL CONSTANTS
+//=========================================================
+
+const CARDS_PER_PAGE = 8;
+const PAGE_COLUMNS = 2;
+const PAGE_ROWS = 4;
+
+//=========================================================
+// PRINT BUTTON
+//=========================================================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const printButton = document.getElementById("printBtn");
+
+    if (printButton) {
+
+        printButton.addEventListener("click", printAllCards);
+
+    }
+
+});
+
+//=========================================================
+// MAIN PRINT FUNCTION
+//=========================================================
 
 function printAllCards() {
 
-    if (students.length === 0) {
+    // Check Student Data
+
+    if (!students || students.length === 0) {
 
         statusError("No student data found.");
 
-        alert("Please upload an Excel file first.");
+        alert("Please upload Student Excel first.");
 
         return;
 
     }
 
-    statusPrinting();
-
-    const printWindow = window.open("", "_blank");
-
-    //==========================================
-    // SCHOOL DETAILS
-    //==========================================
+    // School Information
 
     const schoolName =
-        document.getElementById("schoolName").value;
+        document.getElementById("schoolName").value.trim();
 
     const schoolAddress =
-        document.getElementById("schoolAddress").value;
+        document.getElementById("schoolAddress").value.trim();
 
     const udise =
-        document.getElementById("udise").value;
+        document.getElementById("udise").value.trim();
 
-const showBSPHeader =
-document.getElementById("useBSPHeader").checked;
-    //==========================================
-    // SIGNATURE
-    //==========================================
+    // Principal Signature
 
     let signatureURL = "";
 
-    const signatureFile =
-        document.getElementById("signature").files[0];
+    const signatureInput =
+        document.getElementById("signature");
 
-    if (signatureFile) {
+    if (
+        signatureInput &&
+        signatureInput.files.length > 0
+    ) {
 
         signatureURL =
-            URL.createObjectURL(signatureFile);
+            URL.createObjectURL(signatureInput.files[0]);
 
     }
 
-    //==========================================
-    // HTML START
-    //==========================================
+    statusPrinting();
 
-    let html = `
+    // Create Print Window
+
+    const printWindow =
+        window.open("", "_blank");
+
+    if (!printWindow) {
+
+        alert("Popup blocked. Please allow popups.");
+
+        return;
+
+    }
+
+    // Build Complete HTML
+
+    const html = buildPrintHTML(
+
+        schoolName,
+        schoolAddress,
+        udise,
+        signatureURL
+
+    );
+
+    // Write HTML
+
+    printWindow.document.open();
+
+    printWindow.document.write(html);
+
+    printWindow.document.close();
+
+    // Wait for Loading
+
+    printWindow.onload = function () {
+
+        setTimeout(function () {
+
+            printWindow.focus();
+
+            printWindow.print();
+
+            statusSuccess();
+
+        }, 500);
+
+    };
+
+}
+//=========================================================
+// BUILD COMPLETE PRINT HTML
+//=========================================================
+
+function buildPrintHTML(
+
+    schoolName,
+    schoolAddress,
+    udise,
+    signatureURL
+
+){
+
+let html = `
 
 <!DOCTYPE html>
 
@@ -78,9 +156,21 @@ document.getElementById("useBSPHeader").checked;
 
 <meta charset="UTF-8">
 
-<title>Print Student ID Cards</title>
+<title>
+
+SSIDG Student ID Cards
+
+</title>
 
 <style>
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+}
 
 @page{
 
@@ -92,25 +182,21 @@ document.getElementById("useBSPHeader").checked;
 
 body{
 
-    margin:0;
-
-    font-family:Arial, Helvetica, sans-serif;
-
-    background:white;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#ffffff;
 
 }
 
 .page{
 
     width:194mm;
-
     min-height:280mm;
 
     display:grid;
 
     grid-template-columns:repeat(2,90mm);
 
-    grid-template-rows:repeat(4,62mm);
+    grid-auto-rows:62mm;
 
     gap:4mm;
 
@@ -121,178 +207,145 @@ body{
 .student-card{
 
     width:90mm;
-
     height:62mm;
 
-    box-sizing:border-box;
-
-    background:#fff;
-
     border-left:3px solid #1565C0;
-
     border-right:3px solid #1565C0;
-
     border-top:3px solid #FF9933;
-
     border-bottom:3px solid #138808;
 
     border-radius:5mm;
 
     overflow:hidden;
 
+    background:#ffffff;
+
 }
+
 .bsp-strip{
 
     width:100%;
 
-    text-align:center;
-
-    margin-bottom:2px;
+    height:6mm;
 
 }
 
 .bsp-strip img{
 
     width:100%;
-
-    height:auto;
-
-    max-height:7mm;
-
-    object-fit:contain;
-
+    height:100%;
+    object-fit:cover;
     display:block;
 
 }
 
 .card-header{
 
-    background:linear-gradient(#1565C0,#0D47A1);
+    background:#1565C0;
 
-    color:white;
+    color:#ffffff;
 
     text-align:center;
 
-    padding:1.2mm;
-
-    border-bottom:2px solid #FFC107;
+    padding:1mm;
 
 }
 
 .card-title{
 
-    font-size:11pt;
+    font-size:10pt;
 
     font-weight:bold;
-
-    letter-spacing:.5px;
 
 }
 
 .school-name{
 
-    font-size:9pt;
+    font-size:11pt;
 
     font-weight:bold;
 
-    margin-top:1mm;
+    margin-top:0.5mm;
+
+    text-transform:uppercase;
 
 }
 
 .school-address{
 
-    font-size:7pt;
-
-}
-
-.udise{
-
-    font-size:7pt;
-
-    margin-top:.5mm;
+    font-size:8pt;
 
     font-weight:bold;
 
 }
 
+.udise{
+
+    font-size:8pt;
+
+    font-weight:bold;
+
+    margin-top:0.5mm;
+
+}
 .card-body{
 
     display:flex;
 
     padding:2mm;
 
-    align-items:flex-start;
-
 }
-    .photo{
+
+.photo-box{
 
     width:18mm;
+    height:22mm;
 
-    height:24mm;
-
-    border:1px solid #444;
+    border:1px solid #000;
 
     display:flex;
 
-    align-items:center;
-
     justify-content:center;
+
+    align-items:center;
 
     font-size:7pt;
 
-    font-weight:bold;
-
     margin-right:3mm;
-
-    background:#fff;
 
 }
 
-.details{
+.student-details{
 
     flex:1;
 
 }
 
-.details-table{
+.student-details table{
 
     width:100%;
 
     border-collapse:collapse;
 
-    table-layout:fixed;
-
 }
 
-.details-table td{
+.student-details td{
 
-    padding:0.5mm 1mm;
+    padding:0.4mm;
 
-    font-size:8pt;
+    font-size:7.5pt;
 
     vertical-align:top;
 
-    word-wrap:break-word;
-
 }
 
-.details-table td:first-child{
+.student-details td:first-child{
 
     width:18mm;
 
-    color:#C62828;
-
     font-weight:bold;
 
-    white-space:nowrap;
-
-}
-
-.details-table td:last-child{
-
-    color:#000;
-
-    font-weight:normal;
+    color:#C62828;
 
 }
 
@@ -302,13 +355,10 @@ body{
 
     justify-content:flex-end;
 
-    align-items:flex-end;
-
-    padding:0 3mm 2mm;
-
-    margin-top:2mm;
+    padding:0 2mm 2mm;
 
 }
+
 .signature-box{
 
     text-align:center;
@@ -317,7 +367,7 @@ body{
 
 .signature{
 
-    width:16mm;
+    width:18mm;
 
     max-height:8mm;
 
@@ -325,26 +375,23 @@ body{
 
     display:block;
 
-    margin:0 auto;
+    margin:auto;
 
 }
+
 .signature-line{
 
-    width:22mm;
+    width:20mm;
 
-    height:1px;
+    border-top:1px solid #000;
 
-    background:#000;
-
-    margin:0 auto;
+    margin-top:1mm;
 
 }
 
 .signature-text{
 
     font-size:6pt;
-
-    margin-top:1mm;
 
 }
 
@@ -358,7 +405,7 @@ body{
 
 students.forEach(function(student,index){
 
-    if(index % 8 === 0){
+    if(index % CARDS_PER_PAGE === 0){
 
         if(index !== 0){
 
@@ -370,130 +417,25 @@ students.forEach(function(student,index){
 
     }
 
-    if(useBSPHeader){
+    html += createStudentCard(
 
-        html += createBSPCard(
-            student,
-            schoolName,
-            schoolAddress,
-            udise,
-            signatureURL
-        );
+        student,
 
-    }else{
+        schoolName,
 
-        html += createStandardCard(
-            student,
-            schoolName,
-            schoolAddress,
-            udise,
-            signatureURL
-        );
+        schoolAddress,
 
-    }
+        udise,
+
+        signatureURL
+
+    );
 
 });
-<div class="card-title">
-🎓 STUDENT IDENTITY CARD
-</div>
-
-
-<div class="school-name">
-${schoolName}
-</div>
-
-<div class="school-address">
-${schoolAddress}
-</div>
-
-<div class="udise">
-UDISE : ${udise}
-</div>
-
-</div>
-
-<div class="card-body">
-
-<div class="photo">
-
-PHOTO
-
-</div>
-
-<div class="details">
-
-<table class="details-table">
-
-<tr>
-<td>SR No.</td>
-<td>: ${student.srNo}</td>
-</tr>
-
-<tr>
-<td>Name</td>
-<td>: ${student.studentName}</td>
-</tr>
-
-<tr>
-<td>Father</td>
-<td>: ${student.fatherName}</td>
-</tr>
-
-<tr>
-<td>Class</td>
-<td>: ${student.studentClass}</td>
-</tr>
-
-<tr>
-<td>DOB</td>
-<td>: ${student.dob}</td>
-</tr>
-
-</table>
-
-</div>
-
-</div>
-<div class="card-footer">
-
-    <div class="signature-box">
-
-        ${
-            signatureURL
-            ? `<img src="${signatureURL}" class="signature">`
-            : ""
-        }
-
-        <div class="signature-line"></div>
-
-        <div class="signature-text">
-            Principal Signature
-        </div>
-
-    </div>
-
-</div>
-
-</div>
-
-`;
-
-});
-
-//==========================================
-// CLOSE LAST PAGE
-//==========================================
 
 html += `
 
 </div>
-
-`;
-//==========================================
-// HTML END
-//==========================================
-
-html += `
 
 </body>
 
@@ -501,164 +443,188 @@ html += `
 
 `;
 
-//==========================================
-// WRITE HTML
-//==========================================
-
-printWindow.document.open();
-
-printWindow.document.write(html);
-
-printWindow.document.close();
-
-//==========================================
-// WAIT FOR PAGE LOAD
-//==========================================
-
-printWindow.onload = function(){
-
-    setTimeout(function(){
-
-        printWindow.focus();
-
-        printWindow.print();
-
-        // Uncomment if you want the print
-        // window to close automatically.
-
-        // printWindow.close();
-
-        if(typeof statusSuccess === "function"){
-
-            statusSuccess();
-
-        }
-
-    },500);
-
-};
-
-//==========================================
-// END PRINT FUNCTION
-//==========================================
+return html;
 
 }
+//=========================================================
+// CREATE STUDENT ID CARD
+//=========================================================
 
-//==========================================
-// PRINT BUTTON
-//==========================================
+function createStudentCard(
 
-const printButton = document.getElementById("printBtn");
-//==========================================
-// STANDARD ID CARD
-//==========================================
-
-function createStandardCard(
     student,
     schoolName,
     schoolAddress,
     udise,
     signatureURL
+
 ){
 
 return `
 
 <div class="student-card">
 
-<div class="card-header">
+    <!-- BSP HEADER -->
 
-<div class="card-title">
-🎓 STUDENT IDENTITY CARD
-</div>
+    <div class="bsp-strip">
 
-<div class="school-name">
-${schoolName}
-</div>
+        <img src="./assets/images/bsp-strip.png">
 
-<div class="school-address">
-${schoolAddress}
-</div>
+    </div>
 
-<div class="udise">
-UDISE : ${udise}
-</div>
+    <!-- HEADER -->
 
-</div>
+    <div class="card-header">
 
-<div class="card-body">
+        <div class="card-title">
 
-<div class="photo">
+            STUDENT IDENTITY CARD
 
-PHOTO
+        </div>
 
-</div>
+        <div class="school-name">
 
-<div class="details">
+            ${schoolName}
 
-<table class="details-table">
+        </div>
 
-<tr>
-<td>SR No.</td>
-<td>: ${student.srNo}</td>
-</tr>
+        <div class="school-address">
 
-<tr>
-<td>Name</td>
-<td>: ${student.studentName}</td>
-</tr>
+            ${schoolAddress}
 
-<tr>
-<td>Father</td>
-<td>: ${student.fatherName}</td>
-</tr>
+        </div>
 
-<tr>
-<td>Class</td>
-<td>: ${student.studentClass}</td>
-</tr>
+        <div class="udise">
 
-<tr>
-<td>DOB</td>
-<td>: ${student.dob}</td>
-</tr>
+            UDISE : ${udise}
 
-</table>
+        </div>
 
-</div>
+    </div>
 
-</div>
+    <!-- BODY -->
 
-<div class="card-footer">
+    <div class="card-body">
 
-<div class="signature-box">
+        <!-- PHOTO -->
 
-${
-signatureURL
-?
-`<img src="${signatureURL}" class="signature">`
-:
-""
-}
+        <div class="photo-box">
 
-<div class="signature-line"></div>
+            PHOTO
 
-<div class="signature-text">
+        </div>
 
-Principal Signature
+        <!-- DETAILS -->
 
-</div>
+        <div class="student-details">
 
-</div>
+            <table>
 
-</div>
+                <tr>
+
+                    <td>SR No.</td>
+
+                    <td>${student.srNo}</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Name</td>
+
+                    <td>${student.studentName}</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Father</td>
+
+                    <td>${student.fatherName}</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Class</td>
+
+                    <td>${student.studentClass}</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>DOB</td>
+
+                    <td>${student.dob}</td>
+
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+
+    <div class="card-footer">
+
+        <div class="signature-box">
+
+            ${
+                signatureURL
+                ?
+                `<img src="${signatureURL}" class="signature">`
+                :
+                ""
+            }
+
+            <div class="signature-line"></div>
+
+            <div class="signature-text">
+
+                Principal Signature
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
 `;
 
 }
-if(printButton){
+//=========================================================
+// FINISH PRINT PROCESS
+//=========================================================
 
-    printButton.addEventListener("click", printAllCards);
+function finishPrinting(printWindow, signatureURL){
+
+    printWindow.onload = function(){
+
+        setTimeout(function(){
+
+            printWindow.focus();
+
+            printWindow.print();
+
+            if(signatureURL){
+
+                URL.revokeObjectURL(signatureURL);
+
+            }
+
+            if(typeof statusSuccess === "function"){
+
+                statusSuccess();
+
+            }
+
+        },500);
+
+    };
 
 }
