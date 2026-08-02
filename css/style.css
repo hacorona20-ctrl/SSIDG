@@ -450,15 +450,13 @@ Developer Name
 
     text-align:center;
 
-    margin-top:6px;
+    margin-top:8px;
 
     margin-bottom:15px;
 
-    font-size:16px;
+    font-size:17px;
 
     font-weight:bold;
-
-    color:#222;
 
 }
 
@@ -466,18 +464,20 @@ Developer Name
 
     color:#D50000;
 
-    font-size:17px;
+    font-size:18px;
 
-    font-weight:700;
+    font-weight:bold;
 
 }
 
-.version{
+.app-version{
 
     color:#1565C0;
 
     font-size:18px;
 
     font-weight:bold;
+
+    margin-left:6px;
 
 }
