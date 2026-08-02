@@ -397,9 +397,6 @@ students.forEach(function(student,index){
 🎓 STUDENT IDENTITY CARD
 </div>
 
-<div class="card-title">
-🎓 STUDENT IDENTITY CARD
-</div>
 
 <div class="school-name">
 ${schoolName}
