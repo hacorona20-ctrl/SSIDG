@@ -1,54 +1,69 @@
 /*
-==========================================
-SSIDG - Smart Student ID Card Generator
-Version : 1.0
+=========================================================
+SSIDG Community Edition v1.0
 
-File : preview.js
+Smart Student ID Card Generator
 
-Purpose :
-Generate Student ID Card Preview
+Preview Engine
 
-Author :
-Saurabh Sahai
-==========================================
+Developed By : Saurabh Sahai
+
+© 2026 All Rights Reserved
+=========================================================
 */
 
-// ==========================================
-// Preview First Student
-// ==========================================
+
+//=========================================================
+// GENERATE PREVIEW
+//=========================================================
 
 function generatePreview() {
 
-    if (students.length === 0) {
+    if (!students || students.length === 0) {
 
-        statusError("No student data available.");
+        statusError("No student data found.");
 
-        alert("Please upload a valid Excel file first.");
+        alert("Please upload Student Excel first.");
 
         return;
 
     }
 
-    statusPreview();
-
-    createStudentCard(students[0]);
+    buildPreview(students[0]);
 
 }
 
 
-// ==========================================
-// Create Student Card
-// ==========================================
 
-function createStudentCard(student) {
+//=========================================================
+// BUILD PREVIEW
+//=========================================================
 
-    const school = document.getElementById("schoolName").value;
+function buildPreview(student) {
 
-    const address = document.getElementById("schoolAddress").value;
+    const schoolName =
+        document.getElementById("schoolName").value.trim();
 
-    const udise = document.getElementById("udise").value;
+    const schoolAddress =
+        document.getElementById("schoolAddress").value.trim();
 
-    const signature = document.getElementById("signature").files[0];
+    const udise =
+        document.getElementById("udise").value.trim();
+
+    let signatureURL = "";
+
+    const signatureInput =
+        document.getElementById("signature");
+
+    if (
+        signatureInput &&
+        signatureInput.files.length > 0
+    ) {
+
+        signatureURL =
+            URL.createObjectURL(signatureInput.files[0]);
+
+    }
 
     const previewContainer =
         document.getElementById("previewContainer");
@@ -57,39 +72,56 @@ function createStudentCard(student) {
         document.getElementById("idCard");
 
     previewContainer.style.display = "block";
-
-    let signatureURL = "";
-
-    if (signature) {
-
-        signatureURL = URL.createObjectURL(signature);
-
-    }
-
     idCard.innerHTML = `
-    <div class="student-card">
+
+<div class="preview-page">
+
+<div class="student-card">
+
+    <!-- BSP HEADER -->
+
+    <div class="bsp-strip">
+
+        <img src="assets/images/bsp-strip.png"
+             alt="Basic Shiksha Parishad">
+
+    </div>
+
+    <!-- HEADER -->
 
     <div class="card-header">
 
-        <div class="card-title">
-            STUDENT IDENTITY CARD
-        </div>
-
         <div class="school-name">
-            ${school}
+
+            ${schoolName}
+
         </div>
 
         <div class="school-address">
-            ${address}
+
+            ${schoolAddress}
+
         </div>
 
         <div class="udise">
+
             UDISE : ${udise}
+
         </div>
 
     </div>
 
+    <div class="card-type">
+
+        STUDENT IDENTITY CARD
+
+    </div>
+
+    <!-- BODY -->
+
     <div class="card-body">
+
+        <!-- PHOTO -->
 
         <div class="photo-box">
 
@@ -97,51 +129,56 @@ function createStudentCard(student) {
 
         </div>
 
+        <!-- DETAILS -->
+
         <div class="student-details">
 
-            <p>
+            <table>
 
-                <strong>Name :</strong>
-                ${student.studentName}
+                <tr>
+                    <td>SR No.</td>
+                    <td>${student.srNo || ""}</td>
+                </tr>
 
-            </p>
+                <tr>
+                    <td>Name</td>
+                    <td>${student.studentName || ""}</td>
+                </tr>
 
-            <p>
+                <tr>
+                    <td>Father</td>
+                    <td>${student.fatherName || ""}</td>
+                </tr>
 
-                <strong>Father :</strong>
-                ${student.fatherName}
+                <tr>
+                    <td>Class</td>
+                    <td>${student.studentClass || ""}</td>
+                </tr>
 
-            </p>
+                <tr>
+                    <td>DOB</td>
+                    <td>${student.dob || ""}</td>
+                </tr>
 
-            <p>
-
-                <strong>Class :</strong>
-                ${student.studentClass}
-
-            </p>
-
-            <p>
-
-                <strong>Date of Birth :</strong>
-                ${student.dob}
-
-            </p>
+            </table>
 
         </div>
 
     </div>
 
+    <!-- FOOTER -->
+
     <div class="card-footer">
 
-        <div class="signature-area">
+        <div class="signature-box">
 
             ${
                 signatureURL
-                ?
-                `<img src="${signatureURL}" class="signature-image">`
-                :
-                ""
+                ? `<img src="${signatureURL}" class="signature">`
+                : ""
             }
+
+            <div class="signature-line"></div>
 
             <div class="signature-text">
 
@@ -154,71 +191,393 @@ function createStudentCard(student) {
     </div>
 
 </div>
+
+</div>
+
 `;
 
-} // End of createStudentCard()
+}
+//=========================================================
+// PREVIEW CSS
+//=========================================================
 
+const previewStyle = document.getElementById("ssidgPreviewStyle");
 
-// ==========================================
-// Show Preview
-// ==========================================
+if (!previewStyle) {
+
+    const style = document.createElement("style");
+
+    style.id = "ssidgPreviewStyle";
+
+    style.innerHTML = `
+
+    .preview-page{
+
+        display:flex;
+
+        justify-content:center;
+
+        align-items:flex-start;
+
+        padding:20px;
+
+        background:#e9ecef;
+
+    }
+
+    .student-card{
+
+        width:90mm;
+
+        height:62mm;
+
+        background:#ffffff;
+
+        border-left:3px solid #1565C0;
+
+        border-right:3px solid #1565C0;
+
+        border-top:3px solid #FF9933;
+
+        border-bottom:3px solid #138808;
+
+        border-radius:5mm;
+
+        overflow:hidden;
+
+        box-shadow:0 2px 8px rgba(0,0,0,.20);
+
+        font-family:Arial,Helvetica,sans-serif;
+
+    }
+
+    .bsp-strip{
+
+        width:100%;
+
+        height:6mm;
+
+        margin-top:2px;
+
+    }
+
+    .bsp-strip img{
+
+        width:100%;
+
+        height:100%;
+
+        display:block;
+
+        object-fit:cover;
+
+    }
+
+    .card-header{
+
+        background:#1565C0;
+
+        color:#ffffff;
+
+        text-align:center;
+
+        padding:1mm;
+
+    }
+
+    .school-name{
+
+        font-size:11pt;
+
+        font-weight:bold;
+
+        text-transform:uppercase;
+
+    }
+
+    .school-address{
+
+        font-size:8pt;
+
+        font-weight:bold;
+
+    }
+
+    .udise{
+
+        font-size:8pt;
+
+        font-weight:bold;
+
+        margin-top:0.5mm;
+
+    }
+
+    .card-type{
+
+        text-align:center;
+
+        font-size:9pt;
+
+        font-weight:bold;
+
+        color:#0D47A1;
+
+        border-bottom:1px solid #1565C0;
+
+        padding:1.2mm 0;
+
+        background:#ffffff;
+
+    }
+
+    .card-body{
+
+        display:flex;
+
+        padding:2mm;
+
+    }
+
+    .photo-box{
+
+        width:18mm;
+
+        height:22mm;
+
+        border:1px solid #000;
+
+        display:flex;
+
+        justify-content:center;
+
+        align-items:center;
+
+        font-size:7pt;
+
+        margin-right:3mm;
+
+    }
+
+    .student-details{
+
+        flex:1;
+
+    }
+
+    .student-details table{
+
+        width:100%;
+
+        border-collapse:collapse;
+
+    }
+
+    .student-details td{
+
+        font-size:7.5pt;
+
+        padding:0.4mm;
+
+        vertical-align:top;
+
+    }
+
+    .student-details td:first-child{
+
+        width:18mm;
+
+        font-weight:bold;
+
+        color:#C62828;
+
+    }
+
+    .card-footer{
+
+        display:flex;
+
+        justify-content:flex-end;
+
+        padding:0 2mm 2mm;
+
+    }
+
+    .signature-box{
+
+        text-align:center;
+
+    }
+
+    .signature{
+
+        width:18mm;
+
+        max-height:8mm;
+
+        display:block;
+
+        margin:auto;
+
+        object-fit:contain;
+
+    }
+
+    .signature-line{
+
+        width:20mm;
+
+        border-top:1px solid #000;
+
+        margin-top:0.5mm;
+
+    }
+
+    .signature-text{
+
+        font-size:6pt;
+
+    }
+
+    `;
+
+    document.head.appendChild(style);
+
+}
+//=========================================================
+// SHOW PREVIEW
+//=========================================================
 
 function showPreview() {
 
-    document.getElementById("previewContainer").style.display = "block";
+    const previewContainer =
+        document.getElementById("previewContainer");
+
+    if (previewContainer) {
+
+        previewContainer.style.display = "block";
+
+    }
 
 }
 
 
-// ==========================================
-// Hide Preview
-// ==========================================
+
+//=========================================================
+// HIDE PREVIEW
+//=========================================================
 
 function hidePreview() {
 
-    document.getElementById("previewContainer").style.display = "none";
+    const previewContainer =
+        document.getElementById("previewContainer");
+
+    if (previewContainer) {
+
+        previewContainer.style.display = "none";
+
+    }
 
 }
 
 
-// ==========================================
-// Clear Preview
-// ==========================================
+
+//=========================================================
+// CLEAR PREVIEW
+//=========================================================
 
 function clearPreview() {
 
-    document.getElementById("idCard").innerHTML = "";
+    const idCard =
+        document.getElementById("idCard");
+
+    if (idCard) {
+
+        idCard.innerHTML = "";
+
+    }
 
     hidePreview();
 
 }
 
 
-// ==========================================
-// Refresh Preview
-// ==========================================
+
+//=========================================================
+// REFRESH PREVIEW
+//=========================================================
 
 function refreshPreview() {
 
-    if (students.length === 0) {
+    if (!students || students.length === 0) {
 
         return;
 
     }
 
-    createStudentCard(students[0]);
+    buildPreview(students[0]);
 
 }
 
 
-// ==========================================
-// Auto Refresh
-// ==========================================
 
-document.getElementById("schoolName").addEventListener("input", refreshPreview);
+//=========================================================
+// AUTO REFRESH EVENTS
+//=========================================================
 
-document.getElementById("schoolAddress").addEventListener("input", refreshPreview);
+document.addEventListener("DOMContentLoaded", function () {
 
-document.getElementById("udise").addEventListener("input", refreshPreview);
+    const schoolName =
+        document.getElementById("schoolName");
 
-document.getElementById("signature").addEventListener("change", refreshPreview);
+    const schoolAddress =
+        document.getElementById("schoolAddress");
+
+    const udise =
+        document.getElementById("udise");
+
+    const signature =
+        document.getElementById("signature");
+
+    if (schoolName) {
+
+        schoolName.addEventListener(
+            "input",
+            refreshPreview
+        );
+
+    }
+
+    if (schoolAddress) {
+
+        schoolAddress.addEventListener(
+            "input",
+            refreshPreview
+        );
+
+    }
+
+    if (udise) {
+
+        udise.addEventListener(
+            "input",
+            refreshPreview
+        );
+
+    }
+
+    if (signature) {
+
+        signature.addEventListener(
+            "change",
+            refreshPreview
+        );
+
+    }
+
+});
+
+
+//=========================================================
+// END OF FILE
+//=========================================================
