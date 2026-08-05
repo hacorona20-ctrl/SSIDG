@@ -225,9 +225,8 @@ body{
 .bsp-strip{
 
     width:100%;
-
     height:6mm;
-
+    padding-top:2px;
 }
 
 .bsp-strip img{
@@ -261,14 +260,11 @@ body{
 
 .school-name{
 
-    font-size:11pt;
-
-    font-weight:bold;
-
-    margin-top:0.5mm;
-
+    font-size:12.5pt;
+    font-weight:900;
     text-transform:uppercase;
-
+    letter-spacing:0.3px;
+    line-height:1.05;
 }
 
 .school-address{
@@ -286,6 +282,25 @@ body{
     font-weight:bold;
 
     margin-top:0.5mm;
+
+}
+    .card-type{
+
+    text-align:center;
+
+    font-size:9pt;
+
+    font-weight:bold;
+
+    color:#0D47A1;
+
+    background:#ffffff;
+
+    border-bottom:1px solid #1565C0;
+
+    padding:1.2mm 0;
+
+    letter-spacing:0.5px;
 
 }
 .card-body{
@@ -352,13 +367,10 @@ body{
 .card-footer{
 
     display:flex;
-
     justify-content:flex-end;
-
-    padding:0 2mm 2mm;
-
+    padding:0 2mm 1mm;
+    margin-top:-2px;
 }
-
 .signature-box{
 
     text-align:center;
@@ -476,31 +488,31 @@ return `
 
     <div class="card-header">
 
-        <div class="card-title">
+    <div class="school-name">
 
-            STUDENT IDENTITY CARD
-
-        </div>
-
-        <div class="school-name">
-
-            ${schoolName}
-
-        </div>
-
-        <div class="school-address">
-
-            ${schoolAddress}
-
-        </div>
-
-        <div class="udise">
-
-            UDISE : ${udise}
-
-        </div>
+        ${schoolName}
 
     </div>
+
+    <div class="school-address">
+
+        ${schoolAddress}
+
+    </div>
+
+    <div class="udise">
+
+        UDISE : ${udise}
+
+    </div>
+
+</div>
+
+<div class="card-type">
+
+    STUDENT IDENTITY CARD
+
+</div>
 
     <!-- BODY -->
 
