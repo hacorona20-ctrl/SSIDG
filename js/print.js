@@ -228,6 +228,8 @@ body{
 
     height:6mm;
 
+    margin-top:2px;
+
 }
 
 .bsp-strip img{
@@ -261,11 +263,13 @@ body{
 
 .school-name{
 
-    font-size:11pt;
+    font-size:13pt;
 
-    font-weight:bold;
+    font-weight:700;
 
-    margin-top:0.5mm;
+    margin-top:1mm;
+
+    line-height:1.05;
 
     text-transform:uppercase;
 
@@ -374,10 +378,11 @@ body{
 
     justify-content:flex-end;
 
-    padding:0 2mm 2mm;
+    margin-top:-3mm;
+
+    padding:0 2mm 1mm;
 
 }
-
 .signature-box{
 
     text-align:center;

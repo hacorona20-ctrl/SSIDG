@@ -519,3 +519,97 @@ Developer Name
     letter-spacing:0.5px;
 
 }
+/* =========================================
+   START BUTTON
+========================================= */
+
+#startBtn{
+
+    width:100%;
+
+    padding:18px;
+
+    margin-top:20px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:20px;
+
+    font-weight:700;
+
+    color:#fff;
+
+    background:linear-gradient(135deg,#1565C0,#0D47A1);
+
+    box-shadow:0 8px 20px rgba(21,101,192,.35);
+
+    transition:.30s;
+
+}
+
+#startBtn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 12px 28px rgba(21,101,192,.45);
+
+    background:linear-gradient(135deg,#1976D2,#1565C0);
+
+}
+
+#startBtn:active{
+
+    transform:scale(.98);
+
+}
+/* =========================================
+   START BUTTON
+========================================= */
+
+#startBtn{
+
+    width:100%;
+
+    padding:18px;
+
+    margin-top:20px;
+
+    border:none;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:20px;
+
+    font-weight:700;
+
+    color:#fff;
+
+    background:linear-gradient(135deg,#1565C0,#0D47A1);
+
+    box-shadow:0 8px 20px rgba(21,101,192,.35);
+
+    transition:.30s;
+
+}
+
+#startBtn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 12px 28px rgba(21,101,192,.45);
+
+    background:linear-gradient(135deg,#1976D2,#1565C0);
+
+}
+
+#startBtn:active{
+
+    transform:scale(.98);
+
+}

@@ -253,13 +253,13 @@ if (!previewStyle) {
 
     .bsp-strip{
 
-        width:100%;
+    width:100%;
 
-        height:6mm;
+    height:6mm;
 
-        margin-top:2px;
+    margin-top:2px;
 
-    }
+}
 
     .bsp-strip img{
 
@@ -287,13 +287,17 @@ if (!previewStyle) {
 
     .school-name{
 
-        font-size:11pt;
+    font-size:13pt;
 
-        font-weight:bold;
+    font-weight:700;
 
-        text-transform:uppercase;
+    margin-top:1mm;
 
-    }
+    line-height:1.05;
+
+    text-transform:uppercase;
+
+}
 
     .school-address{
 
@@ -395,13 +399,15 @@ if (!previewStyle) {
 
     .card-footer{
 
-        display:flex;
+    display:flex;
 
-        justify-content:flex-end;
+    justify-content:flex-end;
 
-        padding:0 2mm 2mm;
+    margin-top:-3mm;
 
-    }
+    padding:0 2mm 1mm;
+
+}
 
     .signature-box{
 
